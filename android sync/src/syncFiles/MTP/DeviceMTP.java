@@ -63,6 +63,7 @@ public class DeviceMTP extends Device {
 
 				}else{
 					//delete
+					System.out.println(tmpPath);
 					dir.delete(true);
 				}
 
@@ -70,7 +71,7 @@ public class DeviceMTP extends Device {
 			}else{
 
 				if(!existingFiles.containsKey(tmpPath)){
-
+					System.out.println(tmpPath);
 					child.delete();
 				}else{
 					
@@ -95,7 +96,7 @@ public class DeviceMTP extends Device {
 		progress.stop();
 	}
 	private void copyWalk(Path path, PortableDeviceContainerObject folder){
-		
+
 		//find existing files
 		HashSet<String> paths = new HashSet<>();
 		try(DirectoryStream<Path> dir= Files.newDirectoryStream(path)){
@@ -108,11 +109,14 @@ public class DeviceMTP extends Device {
 		}
 		//find existing files already on device
 		for (PortableDeviceObject child : folder.getChildObjects()) {
+
 			paths.remove(child.getOriginalFileName());
 			if(child instanceof PortableDeviceFolderObject){
 				PortableDeviceFolderObject file= (PortableDeviceFolderObject) child;
-				String tmpPath = path.toString()+"\\"+child.getName();
+				String tmpPath = path.toString()+"\\"+child.getOriginalFileName();
+
 				if(Files.exists(Paths.get(tmpPath))){
+
 					copyWalk(Paths.get(tmpPath), file);
 				}
 			}else{
