@@ -1,12 +1,13 @@
 package gui;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -17,7 +18,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Progress{
 
 	JFrame frame;
-	
+	JTextArea textArea;
+	JProgressBar bar;
+	JLabel transfer;
 	public Progress() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -38,9 +41,15 @@ public class Progress{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		frame.add(panel);
-		panel.add(bar(100));
+		bar=bar(100);
+		panel.add(bar);
 		
-		JTextArea textArea = new JTextArea(5, 30);
+		
+		transfer=new JLabel();
+		updateInfo(0);
+		panel.add(transfer);
+		
+		textArea = new JTextArea(5, 30);
 		textArea.setEditable(false);
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		scrollPane.setPreferredSize(new Dimension(450, 110));
@@ -63,6 +72,29 @@ public class Progress{
 		return bar;
 		
 		
+	}
+	
+	public void update(int progress, int max, ArrayList<String> lines){
+		bar.setMaximum(max);
+		update(progress, lines);
+		
+	}
+	
+	public void update(int progress, ArrayList<String> lines){
+		bar.setValue(progress);
+		for (String line : lines) {
+			addLine(line);
+		}
+		
+		
+	}
+	public void addLine(String line){
+		textArea.append(line);
+	}
+	
+	
+	public void updateInfo(long transferRate){
+		transfer.setText("Transfer rate: "+transferRate+" MB");
 	}
 	public static void main(String[] args) {
 		new Progress();
