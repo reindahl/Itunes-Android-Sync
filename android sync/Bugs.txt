@@ -1,0 +1,6 @@
+embed iTunes artwork
+estimate if there is enough space
+find a better way to compare files than last modified
+should escape special characters uniquely from the path
+
+use distinguished kind instead of name to identify file type (name changes with language)
