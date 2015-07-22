@@ -29,9 +29,9 @@ public class CopyProgress extends Thread {
 		double estimate=0;
 		start = System.nanoTime();
 
-		while(size!=device.size){
+		while(size!=device.sizeOfFilesCopied){
 			device.monitor(false);
-			progress=device.size;
+			progress=device.sizeOfFilesCopied;
 
 			try {
 				if(progress!=0){

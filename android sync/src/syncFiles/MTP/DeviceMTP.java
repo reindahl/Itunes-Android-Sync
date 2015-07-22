@@ -22,6 +22,7 @@ import syncFiles.Sync;
 public class DeviceMTP extends Device {
 
 	PortableDeviceStorageObject storage;
+	long sizeOfExistingFiles=0;
 
 	public DeviceMTP(PortableDeviceStorageObject storage) {
 		this.storage=storage;
@@ -46,9 +47,11 @@ public class DeviceMTP extends Device {
 			}
 
 		}
+		
+		Sync.size-=sizeOfExistingFiles;
 
 	}
-
+	
 	public void deleteWalk(String path, PortableDeviceFolderObject folder, HashMap<String, Path> existingFiles){
 
 		for (PortableDeviceObject child : folder.getChildObjects()) {
@@ -74,7 +77,7 @@ public class DeviceMTP extends Device {
 					System.out.println(tmpPath);
 					child.delete();
 				}else{
-					
+					sizeOfExistingFiles+=child.getSize().longValueExact();
 				}
 			}
 
@@ -92,8 +95,7 @@ public class DeviceMTP extends Device {
 		progress.start();
 		copyWalk(path,  storage );
 		monitor(true);
-		
-		progress.stop();
+
 	}
 	private void copyWalk(Path path, PortableDeviceContainerObject folder){
 
@@ -134,7 +136,7 @@ public class DeviceMTP extends Device {
 				try {
 					System.out.println(tmpPath);
 					PortableDeviceAudioObject file=folder.addAudioObject(tmpPath.toFile(), "", "",new BigInteger("123456789"));
-					size+=file.getSize().longValueExact();
+					sizeOfFilesCopied+=file.getSize().longValueExact();
 					monitor(true);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

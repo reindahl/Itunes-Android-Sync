@@ -20,7 +20,10 @@ import syncFiles.UMS.DeviceUMS;
 
 public abstract class Device {
 
-	
+	/**
+	 * 
+	 * @return The device which should be synchronized
+	 */
 	public static Device find(){
 		
 		Device droid=null;
@@ -141,7 +144,7 @@ public abstract class Device {
 
 	}
 	
-	public long size=0;
+	public long sizeOfFilesCopied=0;
 	boolean release=false;
 	public synchronized void monitor(boolean state){
 		

@@ -10,7 +10,15 @@ import org.xml.sax.SAXException;
 
 import findFiles.Track.FileType;
 
-
+/**
+ * 
+ * @author Kasper Reindahl Rasmussen
+ *
+ * Terrible way of handling this
+ * 
+ * used for reading the Itunes library xml
+ *
+ */
 public class ItunesLibHandler extends org.xml.sax.helpers.DefaultHandler {
 	HashMap<String, Track> tracks= new HashMap<String, Track>(2000);
 	ArrayList<Playlist> playlists = new ArrayList<Playlist>();

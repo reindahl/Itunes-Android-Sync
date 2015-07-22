@@ -58,7 +58,7 @@ public class CopyFilevisitor implements FileVisitor<Path> {
 		
 		Files.copy(file, Paths.get(path+".new"), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
 		Files.move(Paths.get(path+".new"), path, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
-		device.size+=file.toFile().length();
+		device.sizeOfFilesCopied+=file.toFile().length();
 		device.monitor(true);
 
 
