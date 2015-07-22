@@ -59,8 +59,7 @@ public class CopyFilevisitor implements FileVisitor<Path> {
 		Files.copy(file, Paths.get(path+".new"), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
 		Files.move(Paths.get(path+".new"), path, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
 		device.sizeOfFilesCopied+=file.toFile().length();
-		device.monitor(true);
-
+		device.monitor(path.toString());
 
 		//	       if (attrs.isSymbolicLink()) {
 		//	            System.out.format("Symbolic link: %s ", file);
@@ -79,26 +78,6 @@ public class CopyFilevisitor implements FileVisitor<Path> {
 		return FileVisitResult.CONTINUE;
 	}
 	
-	boolean release=false;
-	public synchronized void monitor(boolean state){
-		
-		if(state==true){
-			release=true;
-			notifyAll();
-		}else{
-			try {
-				do{
-					wait();
-				}while(!release);
-				release=false;
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		
-	}
-	
+
 	
 }

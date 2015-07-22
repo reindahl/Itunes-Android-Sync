@@ -1,5 +1,10 @@
 package syncFiles;
 
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+
+import gui.Progress;
 import syncFiles.UMS.CopyFilevisitor;
 
 
@@ -13,10 +18,15 @@ public class CopyProgress extends Thread {
 	CopyFilevisitor copyfilevisitor; 
 	long size;
 
+
 	
+	Progress gui;
+
 	public CopyProgress(Device device, long size){
 		this.device=device;
 		this.size=size;
+		
+		gui=new Progress();
 	}
 
 	public void run() {
@@ -30,7 +40,7 @@ public class CopyProgress extends Thread {
 		start = System.nanoTime();
 
 		while(size!=device.sizeOfFilesCopied){
-			device.monitor(false);
+			device.monitorWait();
 			progress=device.sizeOfFilesCopied;
 
 			try {
@@ -44,16 +54,21 @@ public class CopyProgress extends Thread {
 						System.out.println("size left: "+helperFiles.conversion.humanReadableByteCount(size-progress, false));
 
 						System.out.println("estimated time left: "+helperFiles.conversion.secondsToHMS(estimate));
-						
+						gui.update((int)(progress/((double)size)*1000.), 1000);
 						if(((long)elapsedTimeSeconds)>0){
 							long transferRate =progress/(long)elapsedTimeSeconds;
 							System.out.println("transfer Rate: "+helperFiles.conversion.humanReadableByteCount(transferRate, false)+"/s");
+							gui.updateInfo(helperFiles.conversion.humanReadableByteCount(transferRate, false),helperFiles.conversion.secondsToHMS(estimate),helperFiles.conversion.humanReadableByteCount(size-progress, false));
 						}
-
-
-
-
 						
+						int i=0;
+						String tmpPath= device.popPath();
+						while(tmpPath!=null){
+							i++;
+							gui.addLine(tmpPath);
+							tmpPath=device.popPath();
+						}
+						System.out.println(i);
 
 					}
 				}

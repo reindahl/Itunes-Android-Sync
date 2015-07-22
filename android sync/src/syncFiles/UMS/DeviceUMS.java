@@ -66,7 +66,7 @@ public class DeviceUMS extends Device{
 			CopyProgress progress = new CopyProgress(this, Sync.size);
 			progress.start();
 			Files.walkFileTree(Paths.get(Settings.hardlinkPath), visitor);
-			visitor.monitor(true);
+			monitor();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

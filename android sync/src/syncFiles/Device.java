@@ -6,7 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -145,26 +147,42 @@ public abstract class Device {
 	}
 	
 	public long sizeOfFilesCopied=0;
-	boolean release=false;
-	public synchronized void monitor(boolean state){
-		
-		if(state==true){
-			release=true;
-			notifyAll();
-		}else{
+
+	public synchronized void monitorWait(){
+
 			try {
-				do{
+				while(paths.peekFirst()==null){
 					wait();
-				}while(!release);
-				release=false;
+				};
+
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		
+
 		
 	}
+	public synchronized void monitor(){
+
+			notifyAll();
+
+	}
+	public synchronized void monitor(String path){
+
+			paths.add(path);
+			notifyAll();
+		
+	}
+	
+	Deque<String> paths=new LinkedList<String>();
+
+	public String popPath(){
+		synchronized (paths) {
+			return paths.poll();
+		}
+	}
+	
+	
 	
 	public abstract void delete(HashMap<String, Path> existingFiles);
 	

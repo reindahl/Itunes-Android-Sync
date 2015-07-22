@@ -41,19 +41,19 @@ public class Progress{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		frame.add(panel);
-		bar=bar(100);
+		bar=bar(1000);
 		panel.add(bar);
 		
 		
 		transfer=new JLabel();
-		updateInfo(0);
+		updateInfo("0","0","0");
 		panel.add(transfer);
 		
 		textArea = new JTextArea(5, 30);
 		textArea.setEditable(false);
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		scrollPane.setPreferredSize(new Dimension(450, 110));
-		
+
 		panel.add(scrollPane);
 		
 		frame.pack();
@@ -68,10 +68,15 @@ public class Progress{
 
 		bar.setStringPainted(true);
 		
-		bar.setValue(5);
+		bar.setValue(0);
 		return bar;
 		
 		
+	}
+	
+	public void update(int progress, int max){
+		bar.setMaximum(max);
+		bar.setValue(progress);
 	}
 	
 	public void update(int progress, int max, ArrayList<String> lines){
@@ -89,12 +94,12 @@ public class Progress{
 		
 	}
 	public void addLine(String line){
-		textArea.append(line);
+		textArea.append(line+"\n");
 	}
 	
 	
-	public void updateInfo(long transferRate){
-		transfer.setText("Transfer rate: "+transferRate+" MB");
+	public void updateInfo(String transferRate, String estimate, String size){
+		transfer.setText("<html>Transfer rate: "+transferRate+" <br>Estimated time left: "+estimate+" s<br>Size left: "+size);
 	}
 	public static void main(String[] args) {
 		new Progress();

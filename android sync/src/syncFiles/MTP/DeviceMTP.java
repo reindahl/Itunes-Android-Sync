@@ -1,7 +1,6 @@
 package syncFiles.MTP;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -94,7 +93,7 @@ public class DeviceMTP extends Device {
 		CopyProgress progress = new CopyProgress(this, Sync.size);
 		progress.start();
 		copyWalk(path,  storage );
-		monitor(true);
+		monitor();
 
 	}
 	private void copyWalk(Path path, PortableDeviceContainerObject folder){
@@ -137,7 +136,7 @@ public class DeviceMTP extends Device {
 					System.out.println(tmpPath);
 					PortableDeviceAudioObject file=folder.addAudioObject(tmpPath.toFile());
 					sizeOfFilesCopied+=file.getSize().longValueExact();
-					monitor(true);
+					monitor(tmpPath.toString());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
