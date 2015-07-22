@@ -135,7 +135,7 @@ public class DeviceMTP extends Device {
 			}else{
 				try {
 					System.out.println(tmpPath);
-					PortableDeviceAudioObject file=folder.addAudioObject(tmpPath.toFile(), "", "",new BigInteger("123456789"));
+					PortableDeviceAudioObject file=folder.addAudioObject(tmpPath.toFile());
 					sizeOfFilesCopied+=file.getSize().longValueExact();
 					monitor(true);
 				} catch (IOException e) {
