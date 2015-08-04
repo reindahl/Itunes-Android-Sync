@@ -1,9 +1,5 @@
 package syncFiles;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-
 import gui.Progress;
 import syncFiles.UMS.CopyFilevisitor;
 
