@@ -25,8 +25,6 @@ public class DeviceMTP extends Device {
 
 	public DeviceMTP(PortableDeviceStorageObject storage) {
 		this.storage=storage;
-		
-
 	}
 
 	@Override
@@ -36,7 +34,6 @@ public class DeviceMTP extends Device {
 		for (PortableDeviceObject child : storage.getChildObjects()) {
 			if(child instanceof PortableDeviceFolderObject){
 				PortableDeviceFolderObject dir= (PortableDeviceFolderObject) child;
-				//String tmpPath= pcPath.toString()+"\\"+dir.getName();
 				String tmpPath= dir.getOriginalFileName();
 				if(existingFiles.containsKey(dir.getName())){
 					//explore
@@ -122,6 +119,31 @@ public class DeviceMTP extends Device {
 				}
 			}else{
 				//compare and if necessary replace file
+
+				Path tmpPath = path.resolve(child.getOriginalFileName());
+				try {
+					//FIXME
+//					if(Files.exists(tmpPath) && Files.getLastModifiedTime(tmpPath).toMillis()!=child.getDateModified().getTime()){
+//						System.out.println("difference");
+//						System.out.println(tmpPath);
+//						System.out.println(Files.getLastModifiedTime(tmpPath)+"\n"+ child.getDateModified());
+//						System.out.println(Files.getLastModifiedTime(tmpPath).toMillis()+"\n"+ child.getDateModified().getTime());
+//						System.in.read();
+//					}
+//					if(!(Files.getLastModifiedTime(tmpPath).toMillis()<=child.getDateModified().getTime() && child.getSize().longValueExact()==Files.size(tmpPath))){
+					if(Files.exists(tmpPath) && child.getSize().longValueExact()!=Files.size(tmpPath)){
+						System.out.println(tmpPath);
+						child.delete();
+						PortableDeviceAudioObject file=folder.addAudioObject(tmpPath.toFile());
+						sizeOfFilesCopied+=file.getSize().longValueExact();
+						monitor(tmpPath.toString());
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.exit(0);
+				} 
+				
 			}
 
 		}

@@ -14,22 +14,25 @@ import syncFiles.Sync;
 
 public class DeviceUMS extends Device{
 	Path path;
-	public DeviceUMS(File path) {
-		this.path= Paths.get(path.getPath());
+	
+	
+	public DeviceUMS(File devicePath) {
+		this.path= Paths.get(devicePath.getPath());
 	}
 
-	public DeviceUMS(String droidPath) {
-		this.path= Paths.get(droidPath);
+	public DeviceUMS(String devicePath) {
+		this.path= Paths.get(devicePath);
 	}
 	
-	public DeviceUMS(Path path) {
-		this.path=path;
+	public DeviceUMS(Path devicePath) {
+		this.path=devicePath;
 	}
 
 	@Override
 	public String toString() {
 		return path.toString();
 	}
+	
 	@Override
 	public void delete(HashMap<String, Path> existingFiles){
 		System.out.println("delete");
@@ -44,7 +47,7 @@ public class DeviceUMS extends Device{
 					Files.walkFileTree(startPath,visitor );
 					Sync.size-=visitor.size;
 					System.out.println(listOfFiles[i].getName());
-					System.out.println("size not needed to be copied "+helperFiles.conversion.humanReadableByteCount(visitor.size, false));
+					System.out.println("size not needed to be copied "+helperFiles.Conversion.humanReadableByteCount(visitor.size, false));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

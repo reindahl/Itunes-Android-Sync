@@ -1,8 +1,8 @@
 package helperFiles;
 
-public class conversion {
+public class Conversion {
 	/**
-	 * 
+	 * Converts bytes to String
 	 * @param bytes
 	 * @param si units
 	 * @return

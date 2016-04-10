@@ -13,7 +13,8 @@ import java.util.HashMap;
  * 
  * @author Kasper Reindahl Rasmussen
  *
- *	Removes tracks which are disabled
+ *	
+ *	Removes tracks which are disabled or not ticked (not present in tracks)
  *
  */
 public class DeleteVisitor implements FileVisitor<Path>{
@@ -22,11 +23,11 @@ public class DeleteVisitor implements FileVisitor<Path>{
 	ArrayList<Boolean> delete= new ArrayList<Boolean>();
 	public DeleteVisitor(Track[] tracks){
 		for(Track track: tracks){
-			paths.put(track.path, track.Disabled);
+			paths.put(track.pathHardlink, track.Disabled);
 		}
 	}
 	public DeleteVisitor(ArrayList<Track> tracks){
-		tracks.forEach(track -> paths.put(track.path, track.Disabled));
+		tracks.forEach(track -> paths.put(track.pathHardlink, track.Disabled));
 	}
 
 	@Override

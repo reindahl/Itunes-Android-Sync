@@ -112,8 +112,10 @@ public class test {
 		assertEquals(0, FindFilesInDic(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 		Find.FindFiles();
 		Sync.droid=new DeviceUMS(droidPath);
-		Sync.sync();
+		Sync.synchronise();
 		assertEquals(42, FindFilesInDic(new File(droidPath), new ArrayList<>()).size());
 		assertEquals(40, FindFilesInDic(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 	}
+	
+	
 }

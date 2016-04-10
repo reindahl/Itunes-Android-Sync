@@ -1,3 +1,5 @@
-Device name: 
-Itunes Path: I:/iTunes/iTunes Library.xml
-Itunes Sync path: I:/Android Sync/
+#Settings file
+#Tue Feb 02 22:43:41 CET 2016
+Itunes\ Path=D\:/iTunes/
+Device\ name=
+Itunes\ Sync\ path=D\:/Android Sync/

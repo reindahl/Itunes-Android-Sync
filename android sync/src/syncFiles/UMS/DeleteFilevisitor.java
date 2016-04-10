@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Deletes files not contained in existingFiles
- * uses the size of the files to estimate if they are the same
+ * Deletes files not contained in existingFiles from device
+ * uses the size of the file and last modified to estimate if they are the same
  * @author Kasper Reindahl Rasmussen
  *
  */
@@ -65,7 +65,6 @@ public class DeleteFilevisitor implements FileVisitor<Path>{
 
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-
 		if(delete.get(delete.size()-1)){
 			//file placed in folder that should be deleted
 			Files.delete(file);
@@ -73,7 +72,7 @@ public class DeleteFilevisitor implements FileVisitor<Path>{
 			Path result =existingFiles.get(file.toString().substring(rootpath.length()));
 			if(result==null){
 				Files.delete(file);
-			}else if(Files.size(result)==attrs.size()){
+			}else if(Files.size(result)==attrs.size() && Files.getLastModifiedTime(file).compareTo(Files.getLastModifiedTime(result)) >= 0){
 					size+=file.toFile().length();
 			}else{
 				//old version of the file

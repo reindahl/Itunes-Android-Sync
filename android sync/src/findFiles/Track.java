@@ -12,7 +12,8 @@ public class Track {
 	String album="";
 	String Type;
 	//where the file should be placed
-	Path path;
+	Path pathHardlink;
+	Path pathRelativ;
 	boolean Disabled=false;
 	enum FileType{url,file, remote, unknown};
 	FileType filetype=FileType.unknown;
@@ -22,6 +23,7 @@ public class Track {
 		
 		return "\n"+ID+" "+Disabled+" "+Location;
 	}
+	
 	
 	
 }

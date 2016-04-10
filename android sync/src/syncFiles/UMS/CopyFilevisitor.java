@@ -18,13 +18,11 @@ public class CopyFilevisitor implements FileVisitor<Path> {
 	public CopyFilevisitor(DeviceUMS device) {
 		this.device=device;
 
-		
 	}
 	
 	
 	@Override
 	public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-
 		return FileVisitResult.CONTINUE;
 	}
 

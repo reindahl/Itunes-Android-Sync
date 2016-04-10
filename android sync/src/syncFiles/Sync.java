@@ -15,20 +15,22 @@ public class Sync {
 	
 	
 	
-	public static void sync(){
-		
-		
+	public static void synchronise(){
+
 		HashMap<String, Path> existingFiles = find();
 		
 		droid.delete(existingFiles);
 		
-		System.out.println("size needed to be copied: "+helperFiles.conversion.humanReadableByteCount(size, false));
+		System.out.println("size needed to be copied: "+helperFiles.Conversion.humanReadableByteCount(size, false));
 	
-		droid.copy();
-		
+		droid.copy();	
 	}
 	
-
+	/**
+	 * find prepared files (hard links) that should be synchronised. 
+	 * 
+	 * @return
+	 */
 	public static HashMap<String, Path> find(){
 		System.out.println("find");
 		FindFilevisitor findFilevisitor = new FindFilevisitor(Settings.hardlinkPath);
@@ -39,21 +41,15 @@ public class Sync {
 			e.printStackTrace();
 		}
 		size=findFilevisitor.size;
-		System.out.println("toltal size: "+helperFiles.conversion.humanReadableByteCount(size, false));
+		System.out.println("toltal size: "+helperFiles.Conversion.humanReadableByteCount(size, false));
 		
 		return findFilevisitor.files;
 	}
 	
 	
 	
-	
-	public static void SyncTCP(){
-		
-	}
-	
-	
 	/**
-	 * finds the device that should be synchronized
+	 * finds the device that should be synchronised
 	 */
 	public static void findDroid(){
 		

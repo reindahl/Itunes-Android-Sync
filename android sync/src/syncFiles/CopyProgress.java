@@ -47,14 +47,14 @@ public class CopyProgress extends Thread {
 					if(elapsedTimeSeconds>0 ){
 						estimate=(size-progress)/(progress/elapsedTimeSeconds);
 						
-						System.out.println("size left: "+helperFiles.conversion.humanReadableByteCount(size-progress, false));
+						System.out.println("size left: "+helperFiles.Conversion.humanReadableByteCount(size-progress, false));
 
-						System.out.println("estimated time left: "+helperFiles.conversion.secondsToHMS(estimate));
+						System.out.println("estimated time left: "+helperFiles.Conversion.secondsToHMS(estimate));
 						gui.update((int)(progress/((double)size)*1000.), 1000);
 						if(((long)elapsedTimeSeconds)>0){
 							long transferRate =progress/(long)elapsedTimeSeconds;
-							System.out.println("transfer Rate: "+helperFiles.conversion.humanReadableByteCount(transferRate, false)+"/s");
-							gui.updateInfo(helperFiles.conversion.humanReadableByteCount(transferRate, false),helperFiles.conversion.secondsToHMS(estimate),helperFiles.conversion.humanReadableByteCount(size-progress, false));
+							System.out.println("transfer Rate: "+helperFiles.Conversion.humanReadableByteCount(transferRate, false)+"/s");
+							gui.updateInfo(helperFiles.Conversion.humanReadableByteCount(transferRate, false),helperFiles.Conversion.secondsToHMS(estimate),helperFiles.Conversion.humanReadableByteCount(size-progress, false));
 						}
 						
 						int i=0;
