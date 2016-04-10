@@ -47,7 +47,7 @@ public class DeviceUMS extends Device{
 					Files.walkFileTree(startPath,visitor );
 					Sync.size-=visitor.size;
 					System.out.println(listOfFiles[i].getName());
-					System.out.println("size not needed to be copied "+helperFiles.Conversion.humanReadableByteCount(visitor.size, false));
+					System.out.println("size not needed to be copied "+helperFiles.Conversion.byteToString(visitor.size, false));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -21,7 +21,7 @@ public class Sync {
 		
 		droid.delete(existingFiles);
 		
-		System.out.println("size needed to be copied: "+helperFiles.Conversion.humanReadableByteCount(size, false));
+		System.out.println("size needed to be copied: "+helperFiles.Conversion.byteToString(size, false));
 	
 		droid.copy();	
 	}
@@ -41,7 +41,7 @@ public class Sync {
 			e.printStackTrace();
 		}
 		size=findFilevisitor.size;
-		System.out.println("toltal size: "+helperFiles.Conversion.humanReadableByteCount(size, false));
+		System.out.println("toltal size: "+helperFiles.Conversion.byteToString(size, false));
 		
 		return findFilevisitor.files;
 	}

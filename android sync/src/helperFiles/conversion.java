@@ -6,10 +6,10 @@ public class Conversion {
 	 * @param bytes
 	 * @param si units
 	 * @return
-	 * si== false normal mode
-	 * si== true binary mode
+	 * si == false normal mode
+	 * si == true binary mode
 	 */
-	public static String humanReadableByteCount(long bytes, boolean si) {
+	public static String byteToString(long bytes, boolean si) {
 	    int unit = si ? 1000 : 1024;
 	    if (bytes < unit) return bytes + " B";
 	    int exp = (int) (Math.log(bytes) / Math.log(unit));

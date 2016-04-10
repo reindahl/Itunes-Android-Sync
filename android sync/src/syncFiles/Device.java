@@ -133,8 +133,6 @@ public abstract class Device {
 			while (paths.peekFirst() == null) {
 				wait();
 			}
-			;
-
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

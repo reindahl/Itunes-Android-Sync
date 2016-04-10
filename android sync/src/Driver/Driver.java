@@ -1,4 +1,4 @@
-package Driver;
+package driver;
 import findFiles.Find;
 import settings.Settings;
 import syncFiles.Sync;

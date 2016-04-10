@@ -47,9 +47,8 @@ public class Find{
 		}
 
 		//hardlink ticked files
-		// TODO: skip hardlinking and run virtual (no hardlinking)
-		tracks.stream().filter(t -> !t.Disabled).forEach(t -> createHardlink(t));
-		
+		tracks.stream().filter(t -> !t.Disabled && t.Type != null).forEach(t -> createHardlink(t));
+
 		//add file to avoid android scanning directory (it thinks its music)
 		if(Files.notExists(Paths.get(Settings.hardlinkPath+"audiobooks/"+".nomedia"))){
 			try {
