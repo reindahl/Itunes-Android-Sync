@@ -69,9 +69,7 @@ public class Progress{
 		bar.setStringPainted(true);
 		
 		bar.setValue(0);
-		return bar;
-		
-		
+		return bar;		
 	}
 	
 	public void update(int progress, int max){

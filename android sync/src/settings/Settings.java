@@ -10,18 +10,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-
 public class Settings {
-	public static String deviceName="";
-	public static String hardlinkPath= "I:/Android Sync/";
-	public static String itunesPath="I:/iTunes/";
-	
-	static Path settingsFile =Paths.get("Settings");
-	
+	public static String deviceName = "";
+	public static String hardlinkPath = "I:/Android Sync/";
+	public static String itunesPath = "I:/iTunes/";
+
+	static Path settingsFile = Paths.get("Settings");
+
 	/**
 	 * read settings from Settings file
 	 */
-	public static void readSettings(){
+	public static void readSettings() {
 		Properties prop = new Properties();
 		InputStream input = null;
 
@@ -30,11 +29,11 @@ public class Settings {
 			input = new FileInputStream("Settings");
 
 			prop.load(input);
-			
-			deviceName=(String) prop.getOrDefault("Device name","");
-			itunesPath=(String) prop.getOrDefault("Itunes Path",itunesPath);
-			hardlinkPath=(String) prop.getOrDefault("Itunes Sync path", hardlinkPath);
-			
+
+			deviceName = (String) prop.getOrDefault("Device name", "");
+			itunesPath = (String) prop.getOrDefault("Itunes Path", itunesPath);
+			hardlinkPath = (String) prop.getOrDefault("Itunes Sync path", hardlinkPath);
+
 		} catch (IOException e) {
 			System.err.println("Failed to read Settings using default");
 			e.printStackTrace();
@@ -47,12 +46,13 @@ public class Settings {
 				}
 			}
 		}
-		
+
 	}
+
 	/**
 	 * Save current settings to file
 	 */
-	public static void writeSettings(){
+	public static void writeSettings() {
 		Properties prop = new Properties();
 		prop.setProperty("Device name", deviceName);
 		prop.setProperty("Itunes Path", itunesPath);
@@ -65,7 +65,7 @@ public class Settings {
 		} catch (IOException e) {
 			System.err.println("Failed to save settings");
 			e.printStackTrace();
-		}finally {
+		} finally {
 			if (output != null) {
 				try {
 					output.close();
@@ -74,11 +74,10 @@ public class Settings {
 				}
 			}
 		}
-	
+
 	}
-	public static boolean isSettingsValid(){
+
+	public static boolean isSettingsValid() {
 		return Files.exists(Paths.get(hardlinkPath)) && Files.exists(Paths.get(itunesPath));
 	}
 }
-
-

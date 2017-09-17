@@ -1,5 +1,6 @@
 package findFiles;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -30,10 +31,11 @@ public class Find{
 	/**
 	 * Finds and prepare files for synchronisation. 
 	 * It reads the Itunes library and creates hardlinks for the ticked files in Itunes
+	 * @throws FileNotFoundException 
 	 */
-	public static void FindFiles(){
+	public static void FindFiles() throws FileNotFoundException{
 		
-		ArrayList<Track> tracks=readItunesXmlSax();
+		ArrayList<Track> tracks= readItunesXmlSax();
 		
 		tracks.forEach(e -> normaliseTrack(e));
 
@@ -77,8 +79,13 @@ public class Find{
 	/**
 	 * reads the iTunes library and creates a representation of it
 	 * @return
+	 * @throws FileNotFoundException 
 	 */
-	private static ArrayList<Track> readItunesXmlSax(){
+	private static ArrayList<Track> readItunesXmlSax() throws FileNotFoundException {
+		if (!Files.isReadable(Paths.get(Settings.itunesPath+"iTunes Library.xml"))) {
+			throw new FileNotFoundException("'iTunes Library.xml' is not found. remeber to enable it in itunes");
+		}
+
 		ItunesLibHandler handler = new ItunesLibHandler();
 		try {
 
@@ -131,10 +138,6 @@ public class Find{
 
 		}
 	}
-	
-	
-
-
 
 
 	/**
@@ -143,7 +146,7 @@ public class Find{
 	 * @return clean string
 	 */
 	private static String pathFix(String path){
-		return path.replaceAll("[\\//*?\":<>|]", "_").replaceAll("(^ )|( $)", "").replaceAll("(\\.$)", "_");
+		return path.replaceAll("[\\//*?\":<>|\n]", "_").replaceAll("(^ )|( $)", "").replaceAll("(\\.$)", "_").replaceAll("(^\\.)", "_");
 	}
 
 	private static void createHardlink(Track track){
@@ -160,8 +163,7 @@ public class Find{
 
 		try {
 			if(!Files.exists(newLink)){
-				Files.createLink(newLink, existingFile);
-				
+				Files.createLink(newLink, existingFile);			
 			}else if(!Files.isSameFile(newLink, existingFile)){
 				Files.delete(newLink);
 				Files.createLink(newLink, existingFile);

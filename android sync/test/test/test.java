@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -60,7 +61,7 @@ public class test {
 		return foundFiles;
 	}
 	@Test
-	public void find() {
+	public void find() throws FileNotFoundException {
 		purgeDirectory(new File(Settings.hardlinkPath));
 		assertEquals(0, FindFilesInDic(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 		Find.FindFiles();
@@ -70,7 +71,7 @@ public class test {
 	}
 
 	@Test
-	public void delete() {
+	public void delete() throws FileNotFoundException {
 		Find.FindFiles();
 		Path Droid=Paths.get(droidPath);
 		Path testfile = Paths.get(Droid.toString()+"\\test.test");
@@ -106,7 +107,7 @@ public class test {
 
 
 	@Test
-	public void sync() {
+	public void sync() throws FileNotFoundException {
 		purgeDirectory(new File(Settings.hardlinkPath));
 		assertEquals(5, FindFilesInDic(new File(droidPath), new ArrayList<>()).size());
 		assertEquals(0, FindFilesInDic(new File(Settings.hardlinkPath), new ArrayList<>()).size());

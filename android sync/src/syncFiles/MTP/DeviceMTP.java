@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.logging.Level;
 
 import jmtp.PortableDeviceAudioObject;
 import jmtp.PortableDeviceContainerObject;
@@ -24,13 +25,14 @@ public class DeviceMTP extends Device {
 	long sizeOfExistingFiles=0;
 
 	public DeviceMTP(PortableDeviceStorageObject storage) {
+		logger.setLevel(Level.ALL);
 		this.storage=storage;
 	}
 
 	@Override
 	public void delete(HashMap<String, Path> existingFiles){
 		System.out.println("delete");
-
+		logger.entering(getClass().toString(), "delete");
 		for (PortableDeviceObject child : storage.getChildObjects()) {
 			if(child instanceof PortableDeviceFolderObject){
 				PortableDeviceFolderObject dir= (PortableDeviceFolderObject) child;
@@ -62,7 +64,7 @@ public class DeviceMTP extends Device {
 
 				}else{
 					//delete
-					System.out.println(tmpPath);
+					System.out.println("Delete "+tmpPath);
 					dir.delete(true);
 				}
 
@@ -85,16 +87,17 @@ public class DeviceMTP extends Device {
 
 	@Override
 	public void copy() {
+		logger.entering(getClass().getName(), "copy");
 		System.out.println("copy");
 		Path path=Paths.get(Settings.hardlinkPath);
 		CopyProgress progress = new CopyProgress(this, Sync.size);
 		progress.start();
-		copyWalk(path,  storage );
+		copyWalk(path,  storage);
 		monitor();
 
 	}
 	private void copyWalk(Path path, PortableDeviceContainerObject folder){
-
+		logger.entering(getClass().getName(), "copyWalk");
 		//find existing files
 		HashSet<String> paths = new HashSet<>();
 		try(DirectoryStream<Path> dir= Files.newDirectoryStream(path)){
@@ -102,6 +105,7 @@ public class DeviceMTP extends Device {
 				paths.add(existingPaths.getFileName().toString());
 			}
 		} catch (IOException e) {
+			logger.severe(e.toString());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -114,10 +118,9 @@ public class DeviceMTP extends Device {
 				String tmpPath = path.toString()+"\\"+child.getOriginalFileName();
 
 				if(Files.exists(Paths.get(tmpPath))){
-
 					copyWalk(Paths.get(tmpPath), file);
 				}
-			}else{
+			} else {
 				//compare and if necessary replace file
 
 				Path tmpPath = path.resolve(child.getOriginalFileName());
@@ -131,8 +134,9 @@ public class DeviceMTP extends Device {
 //						System.in.read();
 //					}
 //					if(!(Files.getLastModifiedTime(tmpPath).toMillis()<=child.getDateModified().getTime() && child.getSize().longValueExact()==Files.size(tmpPath))){
-					if(Files.exists(tmpPath) && child.getSize().longValueExact()!=Files.size(tmpPath)){
-						System.out.println(tmpPath);
+					if(Files.exists(tmpPath) && child.getSize().longValueExact() != Files.size(tmpPath)){
+						logger.info("deleting "+tmpPath);
+						System.out.println("deleting "+tmpPath);
 						child.delete();
 						PortableDeviceAudioObject file=folder.addAudioObject(tmpPath.toFile());
 						sizeOfFilesCopied+=file.getSize().longValueExact();
@@ -151,12 +155,19 @@ public class DeviceMTP extends Device {
 		for (String name : paths) {
 			Path tmpPath= Paths.get(path+"/"+name);
 			if(Files.isDirectory(tmpPath)){
+				
 				PortableDeviceFolderObject tmpFolder= folder.createFolderObject(name);
-				copyWalk(tmpPath, tmpFolder);
-			}else{
+				if(tmpFolder !=null){
+					copyWalk(tmpPath, tmpFolder);
+				}else{
+					System.err.println("Failed to create folder: "+tmpPath);
+				}
+				
+			} else {
 				try {
-					System.out.println(tmpPath);
+					System.out.println("creating "+tmpPath);
 					PortableDeviceAudioObject file=folder.addAudioObject(tmpPath.toFile());
+					System.out.println("creating done");
 					sizeOfFilesCopied+=file.getSize().longValueExact();
 					monitor(tmpPath.toString());
 				} catch (IOException e) {

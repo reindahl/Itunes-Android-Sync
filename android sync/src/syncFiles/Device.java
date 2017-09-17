@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -22,12 +23,15 @@ import syncFiles.UMS.DeviceUMS;
 
 public abstract class Device {
 
+    protected static final Logger logger = Logger.getLogger(Device.class.getName());
+   
+	
 	/**
 	 * Finds the Device
 	 * @return The device which should be synchronised
 	 */
 	public static Device find() {
-
+		 
 		Device droid = null;
 
 		ArrayList<Device> devices = new ArrayList<>();
@@ -77,7 +81,7 @@ public abstract class Device {
 	 * 
 	 * @return
 	 */
-	private static ArrayList<Device> findMTP() {
+	protected static ArrayList<Device> findMTP() {
 
 		ArrayList<Device> MTPs = new ArrayList<>();
 

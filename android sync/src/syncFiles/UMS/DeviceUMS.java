@@ -61,7 +61,6 @@ public class DeviceUMS extends Device{
 	
 	@Override
 	public void copy(){
-		
 
 		System.out.println("Copy");
 		try {

@@ -1,4 +1,6 @@
 package driver;
+import java.io.FileNotFoundException;
+
 import findFiles.Find;
 import settings.Settings;
 import syncFiles.Sync;
@@ -14,7 +16,7 @@ public class Driver {
 	static long elapsedTime;
 	static double seconds;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 //		test();
 
 		Settings.readSettings();
