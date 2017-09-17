@@ -150,7 +150,7 @@ public class ItunesLibHandler extends org.xml.sax.helpers.DefaultHandler {
 				case "music":
 					list = "music";
 					break;
-				case "books":
+				case "audiobooks":
 					list = "audiobooks";
 					break;
 				case "podcasts":
