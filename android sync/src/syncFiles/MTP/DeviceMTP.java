@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.logging.Level;
 
-import jmtp.PortableDeviceAudioObject;
 import jmtp.PortableDeviceContainerObject;
 import jmtp.PortableDeviceFolderObject;
 import jmtp.PortableDeviceObject;
@@ -138,8 +137,9 @@ public class DeviceMTP extends Device {
 						logger.info("deleting "+tmpPath);
 						System.out.println("deleting "+tmpPath);
 						child.delete();
-						PortableDeviceAudioObject file=folder.addAudioObject(tmpPath.toFile());
-						sizeOfFilesCopied+=file.getSize().longValueExact();
+						PortableDeviceObject file = folder.addFileObject(tmpPath.toFile());
+//						PortableDeviceAudioObject file = folder.addAudioObject(tmpPath.toFile());
+						sizeOfFilesCopied += file.getSize().longValueExact();
 						monitor(tmpPath.toString());
 					}
 				} catch (Exception e) {
@@ -166,7 +166,7 @@ public class DeviceMTP extends Device {
 			} else {
 				try {
 					System.out.println("creating "+tmpPath);
-					PortableDeviceAudioObject file=folder.addAudioObject(tmpPath.toFile());
+					PortableDeviceObject file = folder.addFileObject(tmpPath.toFile());
 					System.out.println("creating done");
 					sizeOfFilesCopied+=file.getSize().longValueExact();
 					monitor(tmpPath.toString());
