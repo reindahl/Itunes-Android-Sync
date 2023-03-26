@@ -181,7 +181,8 @@ public class ItunesLibHandler extends org.xml.sax.helpers.DefaultHandler {
 					|| list.equalsIgnoreCase("music") || list.equalsIgnoreCase("podcasts"))) {
 				tracks.get(currentTag).Type = list;
 
-			} else if (importantTag.equalsIgnoreCase("Track ID") && list.equalsIgnoreCase("custom")) {
+			}
+			else if (importantTag.equalsIgnoreCase("Track ID") && list.equalsIgnoreCase("custom")) {
 				Track track = tracks.get(currentTag);
 				if (!track.Disabled) {
 					playlists.get(playlists.size() - 1).add(track);
@@ -195,8 +196,7 @@ public class ItunesLibHandler extends org.xml.sax.helpers.DefaultHandler {
 	public org.xml.sax.InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
 		if (systemId.contains("PropertyList-1.0.dtd")) {
 			return new InputSource(new FileReader("PropertyList-1.0.dtd"));
-		} else {
-			return null;
 		}
+		return null;
 	}
 }

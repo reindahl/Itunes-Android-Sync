@@ -159,7 +159,7 @@ public class DeviceMTP extends Device {
 				PortableDeviceFolderObject tmpFolder= folder.createFolderObject(name);
 				if(tmpFolder !=null){
 					copyWalk(tmpPath, tmpFolder);
-				}else{
+				} else{
 					System.err.println("Failed to create folder: "+tmpPath);
 				}
 				

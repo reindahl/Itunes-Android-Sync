@@ -51,8 +51,10 @@ public class Find{
 		//hardlink ticked files
 		tracks.stream().filter(t -> !t.Disabled && t.Type != null).forEach(t -> createHardlink(t));
 
+		
+		
 		//add file to avoid android scanning directory (it thinks its music)
-		if(Files.notExists(Paths.get(Settings.hardlinkPath+"audiobooks/"+".nomedia"))){
+		if (Files.exists(Paths.get(Settings.hardlinkPath+"audiobooks")) && Files.notExists(Paths.get(Settings.hardlinkPath+"audiobooks/"+".nomedia"))){
 			try {
 				Files.createDirectories(Paths.get(Settings.hardlinkPath+"audiobooks/"));
 				Files.createFile(Paths.get(Settings.hardlinkPath+"audiobooks/"+".nomedia"));				
@@ -63,7 +65,7 @@ public class Find{
 
 		//create playlists
 		try {
-			if(Files.notExists(Paths.get(Settings.hardlinkPath+"Playlists"))){
+			if (Files.notExists(Paths.get(Settings.hardlinkPath+"Playlists"))){
 				Files.createDirectory(Paths.get(Settings.hardlinkPath+"Playlists"));
 			}
 		} catch (IOException e) {

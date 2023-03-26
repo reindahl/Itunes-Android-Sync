@@ -37,6 +37,11 @@ public class test {
 
 	@After
 	public void tearDown() throws IOException{
+		if(Files.exists(Paths.get(droidPath+"audiobooks"))){
+			purgeDirectory(new File(droidPath+"audiobooks"));
+			Files.deleteIfExists(Paths.get(droidPath+"audiobooks"));
+		}
+
 		purgeDirectory(new File(droidPath+"music"));
 		if(Files.exists(Paths.get(droidPath+"Playlists"))){
 			purgeDirectory(new File(droidPath+"Playlists"));
@@ -50,23 +55,25 @@ public class test {
 		}
 	}
 
-	ArrayList<String> FindFilesInDic(File dir, ArrayList<String> foundFiles) {
+	ArrayList<String> findFilesInDirectory(File dir, ArrayList<String> foundFiles) {
+		
 		for (File file: dir.listFiles()) {
 			foundFiles.add(file.getPath());
 			if (file.isDirectory()) {
-				FindFilesInDic(file, foundFiles);
+				findFilesInDirectory(file, foundFiles);
 
 			}
 		}
 		return foundFiles;
 	}
+	
 	@Test
 	public void find() throws FileNotFoundException {
 		purgeDirectory(new File(Settings.hardlinkPath));
-		assertEquals(0, FindFilesInDic(new File(Settings.hardlinkPath), new ArrayList<>()).size());
+		assertEquals(0, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 		Find.FindFiles();
-		assertEquals(40, FindFilesInDic(new File(Settings.hardlinkPath), new ArrayList<>()).size());
-		assertEquals(FindFilesInDic(new File(Settings.itunesPath+"/iTunes Media/Music"), new ArrayList<>()).size()+7, FindFilesInDic(new File(Settings.hardlinkPath), new ArrayList<>()).size());
+		assertEquals(49, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
+		assertEquals(findFilesInDirectory(new File(Settings.itunesPath+"/iTunes Media/Music"), new ArrayList<>()).size()+1 /*music*/ + 4 /*playlists*/, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 
 	}
 
@@ -94,28 +101,27 @@ public class test {
 
 	@Test
 	public void copy() {
-		assertEquals(4, FindFilesInDic(new File(droidPath), new ArrayList<>()).size());
-		assertEquals(40, FindFilesInDic(new File(Settings.hardlinkPath), new ArrayList<>()).size());
+		assertEquals(4, findFilesInDirectory(new File(droidPath), new ArrayList<>()).size());
+		assertEquals(49, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 
 		Device device= new DeviceUMS(droidPath);
 		device.copy();
-
-		System.out.println(FindFilesInDic(new File(droidPath), new ArrayList<>()));
-		assertEquals(42, FindFilesInDic(new File(droidPath), new ArrayList<>()).size());
-		assertEquals(40, FindFilesInDic(new File(Settings.hardlinkPath), new ArrayList<>()).size());
+		
+		assertEquals(49 + 3 /*droid/, .droid, test.test*/, findFilesInDirectory(new File(droidPath), new ArrayList<>()).size());
+		assertEquals(49, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 	}
 
 
 	@Test
 	public void sync() throws FileNotFoundException {
 		purgeDirectory(new File(Settings.hardlinkPath));
-		assertEquals(5, FindFilesInDic(new File(droidPath), new ArrayList<>()).size());
-		assertEquals(0, FindFilesInDic(new File(Settings.hardlinkPath), new ArrayList<>()).size());
+		assertEquals(4, findFilesInDirectory(new File(droidPath), new ArrayList<>()).size());
+		assertEquals(0, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 		Find.FindFiles();
-		Sync.droid=new DeviceUMS(droidPath);
+		Sync.droid = new DeviceUMS(droidPath);
 		Sync.synchronise();
-		assertEquals(42, FindFilesInDic(new File(droidPath), new ArrayList<>()).size());
-		assertEquals(40, FindFilesInDic(new File(Settings.hardlinkPath), new ArrayList<>()).size());
+		assertEquals(49 + 3 /*droid/, .droid, test.test*/, findFilesInDirectory(new File(droidPath), new ArrayList<>()).size());
+		assertEquals(49, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 	}
 	
 	
