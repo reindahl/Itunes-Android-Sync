@@ -36,7 +36,7 @@ public class Find{
 	public static void FindFiles() throws FileNotFoundException{
 		
 		ArrayList<Track> tracks= readItunesXmlSax();
-		
+		tracks.removeIf(t -> t.Type != null && Settings.isExcludedMediaType(t.Type));
 		tracks.forEach(e -> normaliseTrack(e));
 
 		//delete old unwanted hardlinks
@@ -51,8 +51,6 @@ public class Find{
 		//hardlink ticked files
 		tracks.stream().filter(t -> !t.Disabled && t.Type != null).forEach(t -> createHardlink(t));
 
-		
-		
 		//add file to avoid android scanning directory (it thinks its music)
 		if (Files.exists(Paths.get(Settings.hardlinkPath+"audiobooks")) && Files.notExists(Paths.get(Settings.hardlinkPath+"audiobooks/"+".nomedia"))){
 			try {

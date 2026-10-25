@@ -38,10 +38,13 @@ public class DeviceUMS extends Device{
 		System.out.println("delete");
 		File dir=new File(Settings.hardlinkPath);
 		File[] listOfFiles=dir.listFiles();
+		if (listOfFiles == null) {
+			return;
+		}
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if(listOfFiles[i].isDirectory()){
 				Path startPath =Paths.get(path.toString()+"\\"+listOfFiles[i].getName());
-				if(Files.exists(startPath)){	
+				if(Files.exists(startPath)){ 
 				try {
 					DeleteFilevisitor visitor=new DeleteFilevisitor(existingFiles, path.toString());
 					Files.walkFileTree(startPath,visitor );

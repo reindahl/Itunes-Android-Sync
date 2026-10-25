@@ -32,11 +32,12 @@ public class test {
 	public void setup(){
 		Settings.hardlinkPath="test files/Android Sync/";
 		Settings.itunesPath="test files/iTunes/";
-
+		Settings.excludedMediaTypes = "";
 	}
 
 	@After
 	public void tearDown() throws IOException{
+		Settings.excludedMediaTypes = "";
 		if(Files.exists(Paths.get(droidPath+"audiobooks"))){
 			purgeDirectory(new File(droidPath+"audiobooks"));
 			Files.deleteIfExists(Paths.get(droidPath+"audiobooks"));
@@ -125,5 +126,39 @@ public class test {
 		assertEquals(13, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 	}
 	
+	@Test
+	public void excludedMediaTypesAreNotIncludedInPreparedSyncSet() throws FileNotFoundException {
+		Settings.excludedMediaTypes = "audiobooks";
+		purgeDirectory(new File(Settings.hardlinkPath));
+		Find.FindFiles();
+
+		assertEquals(0, findFilesInDirectory(new File(Settings.hardlinkPath + "audiobooks"), new ArrayList<>()).size());
+		assertTrue(findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).stream().noneMatch(p -> p.contains("audiobooks")));
+
+		Sync.droid = new DeviceUMS(droidPath);
+		Sync.synchronise();
+		assertTrue(findFilesInDirectory(new File(droidPath), new ArrayList<>()).stream().noneMatch(p -> p.contains("audiobooks")));
+		assertEquals(findFilesInDirectory(new File(Settings.itunesPath + "/iTunes Media/Music"), new ArrayList<>()).size() + 1 /*music*/ + 4 /*playlists*/, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
+	}
 	
+	@Test
+	public void excludedMediaTypesLeaveExistingTargetFolderUntouchedOnSecondSync() throws FileNotFoundException, IOException {
+		Settings.excludedMediaTypes = "";
+		purgeDirectory(new File(Settings.hardlinkPath));
+		Find.FindFiles();
+		Sync.droid = new DeviceUMS(droidPath);
+		Sync.synchronise();
+
+		Path audiobookTargetFolder = Paths.get(droidPath, "audiobooks");
+		assertTrue(Files.exists(audiobookTargetFolder));
+
+		Settings.excludedMediaTypes = "audiobooks";
+		purgeDirectory(new File(Settings.hardlinkPath));
+		Find.FindFiles();
+		Sync.synchronise();
+
+		assertTrue(Files.exists(audiobookTargetFolder));
+		assertTrue(findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).stream().noneMatch(path -> path.contains("audiobooks")));
+	}
+
 }
