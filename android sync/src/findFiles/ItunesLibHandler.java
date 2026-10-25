@@ -23,7 +23,6 @@ public class ItunesLibHandler extends org.xml.sax.helpers.DefaultHandler {
 	HashMap<String, Track> tracks = new HashMap<String, Track>(2000);
 	ArrayList<Playlist> playlists = new ArrayList<Playlist>();
 	Track currentTrack;
-	boolean done = true;
 
 	enum Type {
 		key, string, integer, none
@@ -42,7 +41,6 @@ public class ItunesLibHandler extends org.xml.sax.helpers.DefaultHandler {
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-		done = false;
 
 		if (qName.equalsIgnoreCase("Key")) {
 			type = Type.key;
@@ -64,7 +62,6 @@ public class ItunesLibHandler extends org.xml.sax.helpers.DefaultHandler {
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
-		done = true;
 	}
 
 	@Override

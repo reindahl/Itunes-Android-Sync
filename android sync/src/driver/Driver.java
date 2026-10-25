@@ -17,7 +17,7 @@ public class Driver {
 	static double seconds;
 	
 	public static void main(String[] args) throws FileNotFoundException {
-//		test();
+		//test();
 
 		Settings.readSettings();
 		if(!Settings.isSettingsValid()){

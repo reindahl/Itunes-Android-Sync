@@ -72,7 +72,7 @@ public class test {
 		purgeDirectory(new File(Settings.hardlinkPath));
 		assertEquals(0, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 		Find.FindFiles();
-		assertEquals(49, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
+		assertEquals(13, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 		assertEquals(findFilesInDirectory(new File(Settings.itunesPath+"/iTunes Media/Music"), new ArrayList<>()).size()+1 /*music*/ + 4 /*playlists*/, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 
 	}
@@ -81,20 +81,21 @@ public class test {
 	public void delete() throws FileNotFoundException {
 		Find.FindFiles();
 		Path Droid=Paths.get(droidPath);
-		Path testfile = Paths.get(Droid.toString()+"\\test.test");
+		Path regularAndroidfile = Paths.get(Droid.toString()+"\\test.test");
 		Path testfile2 = null;
 		try {
+			Files.createDirectories(Paths.get(Droid.toString()+"\\music\\"));
 			testfile2= Files.createFile(Paths.get(Droid.toString()+"\\music\\test.test"));
 		} catch (IOException e) {
 			e.printStackTrace();
 			fail("Not yet implemented");
 		}
-		assertTrue(Files.exists(testfile));
+		assertTrue(Files.exists(regularAndroidfile));
 		Device device=new DeviceUMS(Droid);
 
 		device.delete(Sync.find());
-		System.out.println(testfile);
-		assertTrue(Files.exists(testfile));
+		System.out.println(regularAndroidfile);
+		assertTrue(Files.exists(regularAndroidfile));
 		assertFalse(Files.exists(testfile2));
 
 	}
@@ -102,13 +103,13 @@ public class test {
 	@Test
 	public void copy() {
 		assertEquals(4, findFilesInDirectory(new File(droidPath), new ArrayList<>()).size());
-		assertEquals(49, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
+		assertEquals(13, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 
 		Device device= new DeviceUMS(droidPath);
 		device.copy();
 		
-		assertEquals(49 + 3 /*droid/, .droid, test.test*/, findFilesInDirectory(new File(droidPath), new ArrayList<>()).size());
-		assertEquals(49, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
+		assertEquals(13 + 3 /*droid/, .droid, test.test*/, findFilesInDirectory(new File(droidPath), new ArrayList<>()).size());
+		assertEquals(13, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 	}
 
 
@@ -120,8 +121,8 @@ public class test {
 		Find.FindFiles();
 		Sync.droid = new DeviceUMS(droidPath);
 		Sync.synchronise();
-		assertEquals(49 + 3 /*droid/, .droid, test.test*/, findFilesInDirectory(new File(droidPath), new ArrayList<>()).size());
-		assertEquals(49, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
+		assertEquals(13 + 3 /*droid/, .droid, test.test*/, findFilesInDirectory(new File(droidPath), new ArrayList<>()).size());
+		assertEquals(13, findFilesInDirectory(new File(Settings.hardlinkPath), new ArrayList<>()).size());
 	}
 	
 	

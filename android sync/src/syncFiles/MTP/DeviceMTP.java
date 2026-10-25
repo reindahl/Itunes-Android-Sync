@@ -35,7 +35,7 @@ public class DeviceMTP extends Device {
 		for (PortableDeviceObject child : storage.getChildObjects()) {
 			if(child instanceof PortableDeviceFolderObject){
 				PortableDeviceFolderObject dir= (PortableDeviceFolderObject) child;
-				String tmpPath= dir.getOriginalFileName();
+				String tmpPath = dir.getOriginalFileName();
 				if(existingFiles.containsKey(dir.getName())){
 					//explore
 					deleteWalk(tmpPath, dir, existingFiles);
